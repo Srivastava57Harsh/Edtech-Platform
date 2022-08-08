@@ -8,6 +8,7 @@ import { getDashboardCourses } from '../../shared/helper/axios';
 import { CourseSchema } from '../../shared/models';
 import NextJsCarousel from '../../components/home/heroslider';
 import { useEffect } from 'react';
+import { deleteCookie } from 'cookies-next';
 
 const style = {
   container: `bg-gray-100`,
@@ -50,6 +51,8 @@ export async function getServerSideProps() {
     const courseData = coursesRes.courses;
     return { props: { courseData } };
   } catch (error) {
+    deleteCookie('accessToken');
+    deleteCookie('refreshToken');
     console.log(error);
   }
 }

@@ -1,13 +1,11 @@
-import { NextPage } from 'next';
 import SideNavigation from '../../components/dashboard/sidenavigation';
 import TopNavigation from '../../components/dashboard/topnavigation';
-import DashboardProvider from '../../components/dashboard/provider/context';
-import Overlay from '../../components/dashboard/provider/overlay';
 import CourseCard from '../../components/CourseCard';
 import { ToastContainer } from 'react-toastify';
 import { getOwnedCourses } from '../../shared/helper/axios';
 import * as cookie from 'cookie';
 import { CourseSchema } from '../../shared/models';
+import { deleteCookie } from 'cookies-next';
 
 const style = {
   container: `bg-gray-100`,
@@ -52,7 +50,15 @@ export async function getServerSideProps(context: any) {
     const courseData = coursesRes.data;
     return { props: { courseData } };
   } catch (error) {
+    deleteCookie('accessToken');
+    deleteCookie('refreshToken');
     console.log(error);
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+    };
   }
 }
 
