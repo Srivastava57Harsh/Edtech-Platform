@@ -9,7 +9,6 @@ import {
   resetPasswordValidator,
 } from './validator';
 const authRouter = Router();
-
 async function handleSignUp(req: Request, res: Response) {
   try {
     const result = await createUser(req.body);
